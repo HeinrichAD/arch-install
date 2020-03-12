@@ -649,7 +649,7 @@ doSuUserSetLocaleLang() {
 }
 
 doAddMainUser() {
-  useradd -g "$MAIN_USER_GROUP" -G "$MAIN_USER_GROUPS_EXTRA" -s /bin/bash -c "$MAIN_USER_REALNAME" -m "$MAIN_USER_USERNAME"
+  useradd -g "$MAIN_USER_GROUP" -G "$MAIN_USER_GROUPS_EXTRA" -s "$MAIN_USER_SHELL" -c "$MAIN_USER_REALNAME" -m "$MAIN_USER_USERNAME"
   MAIN_USER_HOME="$(eval printf "~$MAIN_USER_USERNAME")"
   chmod 0751 "$MAIN_USER_HOME"
 
@@ -985,11 +985,14 @@ doEnableServiceTeamviewer() {
 doInstallNetworkManager() {
   pacman -S --noconfirm --needed \
     networkmanager \
+    networkmanager-openvpn \
     networkmanager-vpnc \
     modemmanager
 
   if [ "$INSTALL_X11" == "yes" ]; then
-    pacman -S --noconfirm --needed network-manager-applet
+    pacman -S --noconfirm --needed \
+      network-manager-applet \
+      nm-connection-editor
   fi
 }
 
